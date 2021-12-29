@@ -37,37 +37,38 @@ const render = (arScene, arController, arCamera) => {
     rotationTarget += 1;
   }, false);
 
-  // テストで表示する用の立方体
-  const cube = new THREE.Mesh(
-    new THREE.BoxGeometry(450, 600, 50),
-    new THREE.MeshToonMaterial({ color: 0x00FF00 })
-  );
+  // 基盤3Dモデル
+  let basic;
+  const gltfLoader = new THREE.GLTFLoader();
+  gltfLoader.load('./models/test.glb', (gltf) => {
+    basic = gltf.scene;
+    basic.scale.set(10, 10, 10);
+    basic.rotation.set(Math.PI / 2, 0, 0);
+    basic.position.set(200, 320, 0);
+  });
 
-  cube.position.set(200, -100, 0);
+  const lights = Array(4);
+  const lightPositions = [
+    [0, -100, 300],
+    [0, 500, 300],
+    [300, -100, 300],
+    [300, 500, 300]
+  ];
 
-  // const cube2 = new THREE.Mesh(
-  //   new THREE.BoxGeometry(5, 5, 5),
-  //   new THREE.MeshBasicMaterial({ color: 0xFF0000 })
-  // );
-
-  // cube2.position.set(0, 0, 60);
-  // cube2.scale.set(10, 10, 10);
-
-  // 平行光源
-  // const light = new THREE.DirectionalLight(0xffffff, 80);
-  // light.position.set(0, 100, 0);
-  // const light = THREE.AmbientLight(0xFFFFFF, 1.0);
-
-  const light = new THREE.PointLight(0xFFFFFF, 1, 1000, 1.0);
-  light.position.set(200, 320, 300);
+  for (let i = 0; i < lights.length; i++) {
+    lights[i] = new THREE.PointLight(0xFFFFFF, 1.2, 1000, 1.0);
+    lights[i].position.set(lightPositions[i][0], lightPositions[i][1], lightPositions[i][2]);
+  }
 
   // NFTマーカーを読み込み
-  arController.loadNFTMarker('./markers/nenga2', (markerId) => {
+  arController.loadNFTMarker('./markers/nenga', (markerId) => {
     // マーカーシーンを定義
     const marker = arController.createThreeNFTMarker(markerId);
-    marker.add(cube);
-    // marker.add(cube2);
-    marker.add(light);
+    marker.add(basic);
+
+    for (let light of lights) {
+      marker.add(light);
+    }
 
     // マーカーシーンをARシーンに追加
     arScene.scene.add(marker);
