@@ -1,0 +1,22 @@
+:root {
+    --theme-color: rgb(102, 103, 171);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+body {
+    background-color: var(--theme-color);
+}
+
+.portrait canvas {
+    transform-origin: 0 0;
+    transform: rotate(-90deg) translateX(-100%);
+}
+
+.desktop canvas {
+    transform: scale(-1, 1);
+}

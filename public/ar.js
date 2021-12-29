@@ -1,80 +1,91 @@
+///////////////////////////////////
+//  ARレンダリング
+///////////////////////////////////
+const render = (arScene, arController, arCamera) => {
+  document.body.className = arController.orientation;
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+
+  if (arController.orientation === "portrait") {
+    // 表示域が縦長なら
+    const w = (window.innerWidth / arController.videoHeight) * arController.videoWidth;
+    const h = window.innerWidth;
+    renderer.setSize(w, h);
+    renderer.domElement.style.paddingBottom = `${w - h}px`;
+
+  } else if (/Android|mobile|iPad|iPhone/i.test(navigator.userAgent)) {
+    // モバイル端末の横長なら
+    const w = window.innerWidth;
+    const h = (window.innerWidth / arController.videoWidth) * arController.videoHeight;
+    renderer.setSize(w, h);
+
+  } else {
+    // PCなら
+    renderer.setSize(arController.videoWidth, arController.videoHeight);
+    document.body.className += ' desktop';
+  }
+
+  // 最初の要素の前にキャンバスを配置
+  document.body.insertBefore(renderer.domElement, document.body.firstChild);
+
+  let rotationV = 0;
+  let rotationTarget = 0;
+
+  // キャンバスにクリックしたら
+  renderer.domElement.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    rotationTarget += 1;
+  }, false);
+
+  // テストで表示する用の立方体
+  const cube = new THREE.Mesh(
+    new THREE.BoxGeometry(5, 5, 5),
+    new THREE.MeshLambertMaterial({ color: 0x6699FF })
+  );
+
+  cube.position.set(0, 10, 0);
+  cube.scale.set(80, 80, 80);
+
+  // 平行光源
+  const light = new THREE.DirectionalLight(0xffffff, 80);
+  light.position.set(0, 20, 0);
+
+  // NFTマーカーを読み込み
+  arController.loadNFTMarker('./markers/nenga', (markerId) => {
+    // マーカーシーンを定義
+    const marker = arController.createThreeNFTMarker(markerId);
+    marker.add(cube);
+    marker.add(light);
+
+    // マーカーシーンをARシーンに追加
+    arScene.scene.add(marker);
+  });
+
+  // 常時実行
+  const tick = () => {
+    arScene.process();
+
+    arScene.renderOn(renderer);
+    requestAnimationFrame(tick);
+  };
+
+  tick();
+};
+
+
+///////////////////////////////////
+//  初期化
+///////////////////////////////////
 window.addEventListener('artoolkit-loaded', () => {
-  window.ARThreeOnLoad = function () {
+  window.ARThreeOnLoad = () => {
 
     ARController.getUserMediaThreeScene({
-      maxARVideoSize: 320, cameraParam: './parameters/camera.dat',
-      onSuccess: function (arScene, arController, arCamera) {
-
-        document.body.className = arController.orientation;
-
-        var renderer = new THREE.WebGLRenderer({ antialias: true });
-        if (arController.orientation === 'portrait') {
-          var w = (window.innerWidth / arController.videoHeight) * arController.videoWidth;
-          var h = window.innerWidth;
-          renderer.setSize(w, h);
-          renderer.domElement.style.paddingBottom = (w - h) + 'px';
-        } else {
-          if (/Android|mobile|iPad|iPhone/i.test(navigator.userAgent)) {
-            renderer.setSize(window.innerWidth, (window.innerWidth / arController.videoWidth) * arController.videoHeight);
-          } else {
-            renderer.setSize(arController.videoWidth, arController.videoHeight);
-            document.body.className += ' desktop';
-          }
-        }
-
-        document.body.insertBefore(renderer.domElement, document.body.firstChild);
-
-        var rotationV = 0;
-        var rotationTarget = 0;
-
-        renderer.domElement.addEventListener('click', function (ev) {
-          ev.preventDefault();
-          rotationTarget += 1;
-        }, false);
-
-        var sphere = new THREE.Mesh(
-          new THREE.SphereGeometry(0.5, 8, 8),
-          new THREE.MeshNormalMaterial()
-        );
-        sphere.material.flatShading;
-        sphere.position.z = 40;
-        sphere.position.x = 80;
-        sphere.position.y = 80;
-        sphere.scale.set(80, 80, 80);
-
-        var torus = new THREE.Mesh(
-          new THREE.TorusGeometry(0.3, 0.2, 8, 8),
-          new THREE.MeshNormalMaterial()
-        );
-        torus.material.shading = THREE.FlatShading;
-        torus.position.z = 0.5;
-        torus.rotation.x = Math.PI / 2;
-
-        arController.loadNFTMarker('./markers/nenga', function (markerId) {
-          var markerRoot = arController.createThreeNFTMarker(markerId);
-          markerRoot.add(sphere);
-          arScene.scene.add(markerRoot);
-        });
-
-        var tick = function () {
-          arScene.process();
-
-          rotationV += (rotationTarget - sphere.rotation.z) * 0.05;
-          sphere.rotation.z += rotationV;
-          torus.rotation.y += rotationV;
-          rotationV *= 0.8;
-
-          arScene.renderOn(renderer);
-          requestAnimationFrame(tick);
-        };
-
-        tick();
-
-      }
+      maxARVideoSize: 320,
+      cameraParam: './parameters/camera.dat',
+      onSuccess: render
     });
 
-    delete window.ARThreeOnLoad;
-
+    delete window.ArThreeOnLoad;
   };
 
   if (window.ARController && ARController.getUserMediaThreeScene) {
