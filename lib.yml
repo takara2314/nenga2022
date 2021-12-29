@@ -1,0 +1,4 @@
+artoolkit_wasm.js: https://raw.githubusercontent.com/artoolkitx/jsartoolkit5/master/build/artoolkit_wasm.js
+artoolkit_wasm.wasm: https://raw.githubusercontent.com/artoolkitx/jsartoolkit5/master/build/artoolkit_wasm.wasm
+artoolkit.three.js: https://raw.githubusercontent.com/artoolkitx/jsartoolkit5/master/js/artoolkit.three.js
+three.min.js: https://raw.githubusercontent.com/mrdoob/three.js/dev/build/three.min.js
