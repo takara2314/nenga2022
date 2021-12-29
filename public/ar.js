@@ -40,10 +40,10 @@ const render = (arScene, arController, arCamera) => {
   // テストで表示する用の立方体
   const cube = new THREE.Mesh(
     new THREE.BoxGeometry(450, 600, 50),
-    new THREE.MeshToonMaterial({ color: 0x6699FF })
+    new THREE.MeshToonMaterial({ color: 0x00FF00 })
   );
 
-  cube.position.set(200, 320, 0);
+  cube.position.set(200, -100, 0);
 
   // const cube2 = new THREE.Mesh(
   //   new THREE.BoxGeometry(5, 5, 5),
@@ -62,7 +62,7 @@ const render = (arScene, arController, arCamera) => {
   light.position.set(200, 320, 300);
 
   // NFTマーカーを読み込み
-  arController.loadNFTMarker('./markers/nenga', (markerId) => {
+  arController.loadNFTMarker('./markers/nenga2', (markerId) => {
     // マーカーシーンを定義
     const marker = arController.createThreeNFTMarker(markerId);
     marker.add(cube);
