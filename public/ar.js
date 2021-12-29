@@ -6,7 +6,7 @@ const render = (arScene, arController, arCamera) => {
 
   const renderer = new THREE.WebGLRenderer({ antialias: true });
 
-  if (arController.orientation === "portrait") {
+  if (arController.orientation === 'portrait') {
     // 表示域が縦長なら
     const w = (window.innerWidth / arController.videoHeight) * arController.videoWidth;
     const h = window.innerWidth;
@@ -39,22 +39,34 @@ const render = (arScene, arController, arCamera) => {
 
   // テストで表示する用の立方体
   const cube = new THREE.Mesh(
-    new THREE.BoxGeometry(5, 5, 5),
-    new THREE.MeshLambertMaterial({ color: 0x6699FF })
+    new THREE.BoxGeometry(450, 600, 50),
+    new THREE.MeshToonMaterial({ color: 0x6699FF })
   );
 
-  cube.position.set(0, 10, 0);
-  cube.scale.set(80, 80, 80);
+  cube.position.set(200, 320, 0);
+
+  // const cube2 = new THREE.Mesh(
+  //   new THREE.BoxGeometry(5, 5, 5),
+  //   new THREE.MeshBasicMaterial({ color: 0xFF0000 })
+  // );
+
+  // cube2.position.set(0, 0, 60);
+  // cube2.scale.set(10, 10, 10);
 
   // 平行光源
-  const light = new THREE.DirectionalLight(0xffffff, 80);
-  light.position.set(0, 20, 0);
+  // const light = new THREE.DirectionalLight(0xffffff, 80);
+  // light.position.set(0, 100, 0);
+  // const light = THREE.AmbientLight(0xFFFFFF, 1.0);
+
+  const light = new THREE.PointLight(0xFFFFFF, 1, 1000, 1.0);
+  light.position.set(200, 320, 300);
 
   // NFTマーカーを読み込み
   arController.loadNFTMarker('./markers/nenga', (markerId) => {
     // マーカーシーンを定義
     const marker = arController.createThreeNFTMarker(markerId);
     marker.add(cube);
+    // marker.add(cube2);
     marker.add(light);
 
     // マーカーシーンをARシーンに追加
