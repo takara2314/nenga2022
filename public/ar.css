@@ -2,11 +2,6 @@
     --theme-color: rgb(102, 103, 171);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-}
 
 body {
     background-color: var(--theme-color);
@@ -21,14 +16,140 @@ body {
     transform: scale(1, 1);
 } */
 
-html,
-body {
-  margin: 0;
-  overflow: hidden;
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
+
+:root {
+  --theme-color: rgb(102, 103, 171);
+  --font-color: rgb(245, 242, 247);
 }
 
-html {
-  font-family: sans-serif;
+* {
+    margin: 0;
+    padding: 0;
+}
+
+::selection {
+	background-color: rgba(0, 190, 240, 0.5);
+	color: var(--font-color);
+}
+
+/* PC */
+@media screen and (min-width: 768px) {
+    body {
+        font-size: 1.3em;
+        font-family: Inter, Meiryo, sans-serif;
+        margin: 0;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+
+    main {
+        background-color: var(--theme-color);
+        border: solid 3vw white;
+        padding: 2vw 3vw 3vw 3vw;
+        height: 83vh;
+        color: var(--font-color);
+        text-align: center;
+    }
+}
+/* タブレット */
+@media only screen and (min-width: 767px) and (max-width: 1280px) {
+    body {
+        font-size: 1.1em;
+        font-family: Inter, Meiryo, sans-serif;
+        margin: 0;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+
+    main {
+        background-color: var(--theme-color);
+        border: solid 5vw white;
+        padding: 6vw;
+        height: 83vh;
+        color: var(--font-color);
+        text-align: center;
+    }
+}
+/* スマホ */
+@media screen and (max-width: 767px) {
+    body {
+        font-size: 1em;
+        font-family: Inter, Meiryo, sans-serif;
+        margin: 0;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+
+    main {
+        background-color: var(--theme-color);
+        border: solid 5vw white;
+        padding: 6vw;
+        height: 84vh;
+        color: var(--font-color);
+        text-align: center;
+    }
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 0.1em;
+}
+
+h2 {
+    font-size: 1.3em;
+    margin-bottom: 0.1em;
+}
+
+.explain {
+  font-size: 0.75em;
+}
+
+.horizon {
+  width: 100%;
+  height: 0.1em;
+  background-color: white;
+  border-radius: 9999px;
+  margin-top: 1em;
+  margin-bottom: 3em;
+}
+
+input#password {
+  -webkit-appearance: none;
+  font-size: 1em;
+  font-family: Inter, Meiryo, sans-serif;
+  margin-top: 0.6em;
+  margin-bottom: 1.5em;
+  padding: 0.5em 1.2em;
+  width: 67vw;
+  border: solid 0.1em rgb(147, 149, 151);
+  border-radius: 2em;
+  outline: none;
+  text-align: center;
+  font-weight: bold;
+}
+
+#error {
+  color: rgb(239, 68, 68);
+  font-weight: bold;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+button {
+  -webkit-appearance: none;
+  font-size: 1.75em;
+  border-radius: 0.75em;
+  padding: 0.2em 0.8em;
+  margin-top: 0.3em;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+  color: white;
+  background-color: rgb(48, 24, 64);
+  border: solid 0.2em white;
+  outline: none;
 }
 
 #loading {
@@ -52,7 +173,15 @@ html {
 .loading-text {
   color: white;
   font-weight: bold;
-  font-size: 3em;
+  font-size: 1.5em;
+  padding-left: 1em;
+  padding-right: 1em;
+  text-align: center;
+  width: 100%;
+}
+
+p {
+  padding: 0.5em 0;
 }
 
 .ui {
