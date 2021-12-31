@@ -1,0 +1,32 @@
+{
+    "addPath": "",
+    "cameraPara": "/parameters/camera.dat",
+    "container": {
+        "create": true,
+        "containerName": "",
+        "canvasName": ""
+    },
+    "videoSettings": {
+        "width": {
+            "min": 640,
+            "max": 800
+        },
+        "height": {
+            "min": 480,
+            "max": 600
+        },
+        "facingMode": "environment",
+        "targetFrameRate": 30
+    },
+    "loading": {
+        "create": true,
+        "logo": {
+            "src": "foxseed.png",
+            "alt": "虎のふぉくしーど"
+        },
+        "loadingMessage": "読み込み中だよ！"
+    },
+    "stats": {
+        "createHtml": true
+    }
+}
